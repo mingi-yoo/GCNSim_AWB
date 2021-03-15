@@ -1,0 +1,127 @@
+YOUR CONFIGS: configs/FP_22MB_16WAY_LRU.ini
+YOUR DATAFILE(XW): /nfs/home/seonbinara/dataset/GRIP_Pokec/xw_dynamic_3.txt
+YOUR DATAFILE(A): /nfs/home/seonbinara/dataset/GRIP_Pokec/_dynamic_vt_0_4.txt
+
+TOTAL CYCLE: 1036398761
+XW CYCLE: 0, AXW CYCLE: 0
+DRAM UTIL(A): 70535504
+DRAM UTIL(W): 46820962
+TOTAL RUNNING TIME: 4807.55 second
+
+!!!BELOW is DRAMSIM3 LOG!!!
+
+###########################################
+## Statistics of Channel 0
+###########################################
+hbm_dual_cmds                  =            0   # Number of cycles dual cmds issued
+num_read_row_hits              =     83595914   # Number of read row buffer hits
+num_write_buf_hits             =            0   # Number of write buffer hits
+num_reads_done                 =    117356466   # Number of read requests issued
+num_writes_done                =     49631024   # Number of read requests issued
+num_cycles                     =   1036398761   # Number of DRAM cycles
+num_srefx_cmds                 =            0   # Number of SREFX commands
+epoch_num                      =          777   # Number of epochs
+num_read_cmds                  =    117356466   # Number of READ/READP commands
+num_act_cmds                   =     34654410   # Number of ACT commands
+num_write_row_hits             =     48888039   # Number of write row buffer hits
+num_pre_cmds                   =     34654320   # Number of PRE commands
+num_write_cmds                 =     49630979   # Number of WRITE/WRITEP commands
+num_ondemand_pres              =     24263805   # Number of ondemend PRE commands
+num_ref_cmds                   =       797843   # Number of REF commands
+num_refb_cmds                  =            0   # Number of REFb commands
+num_srefe_cmds                 =            0   # Number of SREFE commands
+sref_cycles.0                  =            0   # Cyles of rank in SREF mode rank.0
+sref_cycles.1                  =            0   # Cyles of rank in SREF mode rank.1
+sref_cycles.2                  =            0   # Cyles of rank in SREF mode rank.2
+sref_cycles.3                  =            0   # Cyles of rank in SREF mode rank.3
+sref_cycles.4                  =            0   # Cyles of rank in SREF mode rank.4
+sref_cycles.5                  =            0   # Cyles of rank in SREF mode rank.5
+sref_cycles.6                  =            0   # Cyles of rank in SREF mode rank.6
+sref_cycles.7                  =            0   # Cyles of rank in SREF mode rank.7
+all_bank_idle_cycles.0         =     63524462   # Cyles of all bank idle in rank rank.0
+all_bank_idle_cycles.1         =     63401716   # Cyles of all bank idle in rank rank.1
+all_bank_idle_cycles.2         =     63413973   # Cyles of all bank idle in rank rank.2
+all_bank_idle_cycles.3         =     63653941   # Cyles of all bank idle in rank rank.3
+all_bank_idle_cycles.4         =     63596612   # Cyles of all bank idle in rank rank.4
+all_bank_idle_cycles.5         =     63399118   # Cyles of all bank idle in rank rank.5
+all_bank_idle_cycles.6         =     63186408   # Cyles of all bank idle in rank rank.6
+all_bank_idle_cycles.7         =     63819362   # Cyles of all bank idle in rank rank.7
+rank_active_cycles.0           =    972874299   # Cyles of rank active rank.0
+rank_active_cycles.1           =    972997045   # Cyles of rank active rank.1
+rank_active_cycles.2           =    972984788   # Cyles of rank active rank.2
+rank_active_cycles.3           =    972744820   # Cyles of rank active rank.3
+rank_active_cycles.4           =    972802149   # Cyles of rank active rank.4
+rank_active_cycles.5           =    972999643   # Cyles of rank active rank.5
+rank_active_cycles.6           =    973212353   # Cyles of rank active rank.6
+rank_active_cycles.7           =    972579399   # Cyles of rank active rank.7
+interarrival_latency[-0]       =            0   # Request interarrival latency (cycles)
+interarrival_latency[0-9]      =    155395845   # Request interarrival latency (cycles)
+interarrival_latency[10-19]    =      5495447   # Request interarrival latency (cycles)
+interarrival_latency[20-29]    =      1410860   # Request interarrival latency (cycles)
+interarrival_latency[30-39]    =       989819   # Request interarrival latency (cycles)
+interarrival_latency[40-49]    =       583612   # Request interarrival latency (cycles)
+interarrival_latency[50-59]    =       367396   # Request interarrival latency (cycles)
+interarrival_latency[60-69]    =       317201   # Request interarrival latency (cycles)
+interarrival_latency[70-79]    =       246246   # Request interarrival latency (cycles)
+interarrival_latency[80-89]    =       178462   # Request interarrival latency (cycles)
+interarrival_latency[90-99]    =       134553   # Request interarrival latency (cycles)
+interarrival_latency[100-]     =      1868049   # Request interarrival latency (cycles)
+read_latency[-0]               =            0   # Read request latency (cycles)
+read_latency[0-19]             =            0   # Read request latency (cycles)
+read_latency[20-39]            =      9394790   # Read request latency (cycles)
+read_latency[40-59]            =      9639992   # Read request latency (cycles)
+read_latency[60-79]            =     16277708   # Read request latency (cycles)
+read_latency[80-99]            =      8373701   # Read request latency (cycles)
+read_latency[100-119]          =      6096140   # Read request latency (cycles)
+read_latency[120-139]          =      4950769   # Read request latency (cycles)
+read_latency[140-159]          =      3947235   # Read request latency (cycles)
+read_latency[160-179]          =      3388905   # Read request latency (cycles)
+read_latency[180-199]          =      3070158   # Read request latency (cycles)
+read_latency[200-]             =     52217068   # Read request latency (cycles)
+write_latency[-0]              =            0   # Write cmd latency (cycles)
+write_latency[0-19]            =         5778   # Write cmd latency (cycles)
+write_latency[20-39]           =        44705   # Write cmd latency (cycles)
+write_latency[40-59]           =       125008   # Write cmd latency (cycles)
+write_latency[60-79]           =       187081   # Write cmd latency (cycles)
+write_latency[80-99]           =       207011   # Write cmd latency (cycles)
+write_latency[100-119]         =       247398   # Write cmd latency (cycles)
+write_latency[120-139]         =       309900   # Write cmd latency (cycles)
+write_latency[140-159]         =       353467   # Write cmd latency (cycles)
+write_latency[160-179]         =       407171   # Write cmd latency (cycles)
+write_latency[180-199]         =       474050   # Write cmd latency (cycles)
+write_latency[200-]            =     47269410   # Write cmd latency (cycles)
+refb_energy                    =           -0   # Refresh-bank energy
+ref_energy                     =  1.49514e+12   # Refresh energy
+write_energy                   =  2.70628e+11   # Write energy
+act_energy                     =  2.82115e+11   # Activation energy
+read_energy                    =  7.21038e+11   # Read energy
+sref_energy.0                  =            0   # SREF energy rank.0
+sref_energy.1                  =            0   # SREF energy rank.1
+sref_energy.2                  =            0   # SREF energy rank.2
+sref_energy.3                  =            0   # SREF energy rank.3
+sref_energy.4                  =            0   # SREF energy rank.4
+sref_energy.5                  =            0   # SREF energy rank.5
+sref_energy.6                  =            0   # SREF energy rank.6
+sref_energy.7                  =            0   # SREF energy rank.7
+act_stb_energy.0               =  7.65847e+11   # Active standby energy rank.0
+act_stb_energy.1               =  7.65943e+11   # Active standby energy rank.1
+act_stb_energy.2               =  7.65934e+11   # Active standby energy rank.2
+act_stb_energy.3               =  7.65745e+11   # Active standby energy rank.3
+act_stb_energy.4               =   7.6579e+11   # Active standby energy rank.4
+act_stb_energy.5               =  7.65945e+11   # Active standby energy rank.5
+act_stb_energy.6               =  7.66113e+11   # Active standby energy rank.6
+act_stb_energy.7               =  7.65615e+11   # Active standby energy rank.7
+pre_stb_energy.0               =  4.26884e+10   # Precharge standby energy rank.0
+pre_stb_energy.1               =   4.2606e+10   # Precharge standby energy rank.1
+pre_stb_energy.2               =  4.26142e+10   # Precharge standby energy rank.2
+pre_stb_energy.3               =  4.27754e+10   # Precharge standby energy rank.3
+pre_stb_energy.4               =  4.27369e+10   # Precharge standby energy rank.4
+pre_stb_energy.5               =  4.26042e+10   # Precharge standby energy rank.5
+pre_stb_energy.6               =  4.24613e+10   # Precharge standby energy rank.6
+pre_stb_energy.7               =  4.28866e+10   # Precharge standby energy rank.7
+average_interarrival           =      6.20645   # Average request interarrival latency (cycles)
+average_read_latency           =      242.724   # Average read request latency (cycles)
+average_power                  =      8912.81   # Average power (mW)
+average_bandwidth              =      13.7491   # Average bandwidth
+total_energy                   =  9.23722e+12   # Total energy (pJ)
+
