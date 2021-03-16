@@ -32,6 +32,9 @@ public:
 	void ResetRequestStat();
 	void TurnOffFlag();
 private:
+	int x_repeat;
+	uint64_t pre_row_archive;
+	uint64_t v_cache_idx;
 	int id;
 	int pop_count;
 	uint64_t q_space;

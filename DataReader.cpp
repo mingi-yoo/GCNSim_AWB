@@ -19,6 +19,13 @@ extern uint64_t AXW_START;
 
 uint64_t w_h, w_w, x_h, x_w, a_w, a_h;
 
+extern uint64_t max_v;
+queue<uint64_t> edge_req_count;
+queue<uint64_t> edge_req_count_cnt;
+queue<uint64_t> vertex_req_count;
+queue<uint64_t> vertex_req_count_cnt;
+bool is_vertex;
+
 DataReader::DataReader(string path1, string path2) { 
 	ReadData(path1, path2); 
 }
@@ -30,9 +37,11 @@ queue<float> DataReader::GetFloatVal(string line, char delimiter) {
 	stringstream ss(line);
 	string temp;
 
+
+
+
 	while (getline(ss, temp, delimiter)) {
-		if (temp == "\n")
-			break;
+		
 		internal.push(stof(temp));
 	}
 
@@ -43,10 +52,23 @@ queue<uint64_t> DataReader::GetUint64Val(string line, char delimiter) {
 	queue<uint64_t> internal;
 	stringstream ss(line);
 	string temp;
+	uint64_t start_v = 0;
+	uint64_t parse_count = 0;
+	uint64_t v_count = 1;
+
+	getline(ss, temp, delimiter);
+	internal.push(stof(temp));
 
 	while (getline(ss, temp, delimiter)) {
-		if (temp == "\n")
-			break;
+		parse_count++;
+		v_count++;
+
+		if (is_vertex && ((parse_count % max_v == 0) || (parse_count == a_h))) {
+			edge_req_count.push(stoull(temp) - start_v);
+			vertex_req_count.push(v_count);
+			start_v = stoull(temp);
+			v_count = 0;
+		}
 		internal.push(stoull(temp));
 	}
 
@@ -78,8 +100,12 @@ bool DataReader::ReadData(string path1, string path2) {
 	if (openFile2.is_open()) {
 		string line;
 		getline(openFile2, line);
+		is_vertex = true;
 		adjrowindex = GetUint64Val(line, ' ');
+		edge_req_count_cnt = edge_req_count;
+		vertex_req_count_cnt = vertex_req_count;
 		getline(openFile2, line);
+		is_vertex = false;
 		adjcolindex = GetUint64Val(line, ' ');
 		openFile2.close();
 	}

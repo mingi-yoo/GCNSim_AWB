@@ -19,6 +19,12 @@ extern uint64_t AXW_START;
 extern uint64_t w_h, w_w, x_h, x_w, a_w, a_h;
 
 extern int w_fold;
+extern uint64_t max_v;
+extern queue<uint64_t> edge_req_count_cnt;
+extern queue<uint64_t> vertex_req_count_cnt;
+
+uint64_t v_limit;
+uint64_t e_limit;
 
 DataController::DataController(int id,
 							   queue<uint64_t> adjrowindex, 
@@ -53,8 +59,13 @@ queue<uint64_t> DataController::AdjRowDataReturn() {
 	int count = CACHE_LINE_COUNT;
 	queue<uint64_t> ret;
 
-	if (adjrowindex.size() < CACHE_LINE_COUNT)
-		count = adjrowindex.size();
+	if (v_limit + CACHE_LINE_COUNT > vertex_req_count_cnt.front()) {
+		count = vertex_req_count_cnt.front() - v_limit;
+		v_limit = 0;
+		vertex_req_count_cnt.pop();
+	}
+	else
+		v_limit += CACHE_LINE_COUNT;
 
 
 	// for debugging
@@ -78,8 +89,13 @@ queue<uint64_t> DataController::AdjColDataReturn() {
 	int count = CACHE_LINE_COUNT;
 	queue<uint64_t> ret;
 
-	if (adjcolindex.size() < CACHE_LINE_COUNT)
-		count = adjcolindex.size();
+	if (e_limit + CACHE_LINE_COUNT > edge_req_count_cnt.front()) {
+		count = edge_req_count_cnt.front() - e_limit;
+		e_limit = 0;
+		edge_req_count_cnt.pop();
+	}
+	else
+		e_limit += CACHE_LINE_COUNT;
 
 
 	// for debugging

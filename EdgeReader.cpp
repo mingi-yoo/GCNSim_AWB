@@ -22,6 +22,15 @@ extern int UNIT_W_READ;
 
 queue<uint64_t> zero_row;
 
+
+// for awb
+extern uint64_t max_v;
+vector<uint64_t> e_cache;
+extern queue<uint64_t> edge_req_count;
+uint64_t last_v;
+uint64_t v_arch;
+int block_cnt;
+
 EdgeReader::EdgeReader(int id, 
 					   uint64_t offset,
 					   uint64_t a_col_size,
@@ -36,7 +45,8 @@ EdgeReader::EdgeReader(int id,
 	write_address = AXW_START;
 	flag.req_need = true;
 	flag.q_empty = true;
-	req_stat.tot_read_cnt = ceil((double)a_col_size/CACHE_LINE_COUNT);
+	req_stat.tot_read_cnt = ceil((double)edge_req_count.front()/CACHE_LINE_COUNT);
+	edge_req_count.pop();
 	req_stat.pre_read_cnt = 0;
 	req_stat.read_cnt_acm = 0;
 	pre_row = 0;
@@ -50,6 +60,11 @@ EdgeReader::EdgeReader(int id,
 	pre_w_fold_start = 0;
 	write_count = ceil((double)a_h/CACHE_LINE_COUNT);
 	do_write = false;
+	t_cache.push_back(0);
+	e_cache_idx = 0;
+	pre_row_archive = 0;
+	last_v = 0;
+	block_cnt = 0;
 }
 
 EdgeReader::~EdgeReader() {}
@@ -119,9 +134,10 @@ ERData EdgeReader::TransferData() {
 }
 
 void EdgeReader::OuterProduct() {
-	if (!eq.empty()  && remain_col_num != 0) {
-		int row = eq.front();
+	if (!eq.empty() && remain_col_num != 0) {
+		uint64_t row = eq.front();
 		eq.pop();
+		e_cache.push_back(row);
 		q_space--;
 
 		if ((req_stat.pre_read_cnt < req_stat.tot_read_cnt) && (MAX_QUEUE_SIZE - q_space > CACHE_LINE_COUNT))
@@ -130,22 +146,47 @@ void EdgeReader::OuterProduct() {
 
 		//cout<<req_stat.read_cnt_acm<<" "<<req_stat.pre_read_cnt<<" "<<req_stat.tot_read_cnt<<endl;
 
-		if (remain_col_num == 0 && pre_w_fold != w_fold - 1) {
+		if (remain_col_num == 0) {
 			can_receive = true;
-			if (pre_row == a_h) {
-				pre_row = 0;
-				pre_w_fold++;
+			if (pre_row % max_v == 0 || pre_row == a_h) {
+				pre_row = pre_row_archive;
+				x_repeat++;
 				do_write = true;
 			}
 		}
-		else if (remain_col_num == 0 && pre_w_fold == w_fold - 1) {
-			//cout<<"Writing"<<endl;
+	}
+	else if (x_repeat > 0 && remain_col_num != 0) {
+		uint64_t row = e_cache[e_cache_idx];
+		e_cache_idx++;
+
+		remain_col_num--;
+
+		if (remain_col_num == 0 && x_repeat != w_fold - 1) {
 			can_receive = true;
-			if (pre_row == a_h) {
-				can_receive = false;
+			if (pre_row % max_v == 0 || pre_row == a_h) {
+				pre_row = pre_row_archive;
+				x_repeat++;
+				e_cache_idx = 0;
 				do_write = true;
 			}
 		}
+		else if (remain_col_num == 0 && x_repeat == w_fold - 1) {
+			can_receive = true;
+			if (pre_row % max_v == 0 || pre_row == a_h) {
+				block_cnt++;
+				if (pre_row == a_h)
+					can_receive = false;
+				else
+					flag.req_need = true;
+				pre_row_archive = pre_row;
+				last_v = v_arch;
+				e_cache_idx = 0;
+				e_cache.clear();
+				x_repeat = 0;
+				do_write = true;
+			}
+		}
+
 	}
 }
 
@@ -155,7 +196,7 @@ void EdgeReader::Write() {
 		dram->DRAMRequest(write_address, WRITE);
 		write_count--;
 		if (write_count == 0) {
-			cout<<"Writing... "<<pre_w_fold<<endl;
+			cout<<"Writing... "<<x_repeat<<", "<<block_cnt<<endl;
 			cout<<"Remain write count: "<<tot_axw_count<<endl;
 			write_count = ceil((double)a_h/CACHE_LINE_COUNT);
 			do_write = false;
@@ -168,7 +209,7 @@ bool EdgeReader::IsEndRequest() {
 }
 
 bool EdgeReader::IsEndOperation() {
-	return (req_stat.pre_read_cnt == req_stat.tot_read_cnt) && (pre_req_repeat == tot_req_repeat - 1);
+	return (req_stat.pre_read_cnt == req_stat.tot_read_cnt) && edge_req_count.empty();
 }
 
 bool EdgeReader::CanVertexReceive() {
@@ -188,23 +229,27 @@ void EdgeReader::ReceiveData(queue<uint64_t> data) {
 
 void EdgeReader::ReceiveData(uint64_t vertex) {
 	//cout<<"ER) VERTEX RECEIVE"<<endl;
-	if (cur_v > vertex)
-		prev_v = 0;
-	else
-		prev_v = cur_v;
-	cur_v = vertex;
-	remain_col_num = cur_v - prev_v;
-	col_num_archive = remain_col_num;
-	can_receive = false;
-	pre_row++;
-	//cout<<"REMAIN_COL_NUM: "<<remain_col_num<<endl;
-	if (remain_col_num == 0) {
-		//cout<<"pre_row : "<<pre_row<<" "<<a_h<<endl;
-		can_receive = true;
-		if (pre_row == a_h) {
-			pre_row = 0;
-			do_write = true;
-			//cout<<"IN"<<endl;
+	if (vertex != -1) {
+		if (cur_v > vertex)
+			prev_v = last_v;
+		else
+			prev_v = cur_v;
+
+		cur_v = vertex;
+		remain_col_num = cur_v - prev_v;
+		col_num_archive = remain_col_num;
+		can_receive = false;
+		pre_row++;
+		v_arch = vertex;
+		//cout<<"REMAIN_COL_NUM: "<<remain_col_num<<endl;
+		if (remain_col_num == 0) {
+			//cout<<"pre_row : "<<pre_row<<" "<<a_h<<endl;
+			can_receive = true;
+			if (pre_row == a_h) {
+				pre_row = 0;
+				do_write = true;
+				//cout<<"IN"<<endl;
+			}
 		}
 	}
 }

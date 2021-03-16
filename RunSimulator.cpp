@@ -67,6 +67,8 @@ extern vector<uint64_t> set_util;
 uint64_t cycle;
 uint64_t tot_xw_count;
 
+uint64_t max_v;
+
 IniParser *ip;
 DataReader *dr;
 DRAMInterface *dram; 
@@ -113,6 +115,8 @@ int main(int argc, char** argv) {
 				return 0;
 		}
 	}
+	cout<<"MAX VERTICES OF T CACHE: ";
+	cin>>max_v;
 	/* test code start */
 	ip = new IniParser(ini);
 	dr = new DataReader(data1, data2);
@@ -127,6 +131,7 @@ int main(int argc, char** argv) {
 	cout<<endl;
 
 	uint64_t tot_w = w_h * w_w;
+
 
 	cout<<"TOTAL SIZE OF WEIGHT: "<<tot_w<<endl<<endl;
 
@@ -302,14 +307,6 @@ int main(int argc, char** argv) {
 				else if (a_type[i] == A_COL) 
 					a_data[i] = dc[id[i]]->AdjColDataReturn();
 			}
-			if (MECHA_TYPE == 0) {
-				for (int i = 0; i < ip->tot_acc; i++) {
-					if (dc[i]->NeedRefill(A_ROW))
-						dc[i]->RefillQueue(A_ROW);
-					if (dc[i]->NeedRefill(A_COL))
-						dc[i]->RefillQueue(A_COL);
-				}
-			}
 		}
 		//DataController Turn End
 		//VertexReader Turn Start
@@ -318,19 +315,8 @@ int main(int argc, char** argv) {
 				vr[id[i]]->ReceiveData(a_data[i]);
 		}
 		for (int i = 0; i < ip->tot_acc; i++) {
-			if (MECHA_TYPE == 0) {
-				if (vr[i]->IsEndRequest()) {
-					vr[i]->pre_w_fold++;
-					vr[i]->ResetRequestStat();
-				}
-				else if (vr[i]->IsEndOperation())
-					vr[i]->TurnOffFlag();
-			}
-			else if (MECHA_TYPE == 1) {
-				if (vr[i]->BasisEndOperation()) {
-					vr[i]->TurnOffFlag();
-				}
-			}
+			if (vr[i]->IsEndOperation())
+				vr[i]->TurnOffFlag();
 			if (vr[i]->flag.req_need)
 				vr[i]->Request();
 		}
@@ -344,10 +330,7 @@ int main(int argc, char** argv) {
 			//cout<<er[i]->CanVertexReceive()<<" "<<vr[i]->flag.q_empty<<endl;
 			if (er[i]->CanVertexReceive() && !(vr[i]->flag.q_empty) && f_flag == true) 
 				er[i]->ReceiveData(vr[i]->TransferData());
-			if (er[i]->IsEndRequest()) {
-				er[i]->ResetRequestStat();
-			}
-			else if (er[i]->IsEndOperation()) 
+			if (er[i]->IsEndOperation()) 
 				er[i]->TurnOffFlag();
 			if (er[i]->flag.req_need)
 				er[i]->Request();

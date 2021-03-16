@@ -34,6 +34,9 @@ public:
 	void Write();
 
 private:
+	int x_repeat;
+	uint64_t e_cache_idx;
+	uint64_t pre_row_archive;
 	int write_count;
 	bool do_write;
 	int id;
