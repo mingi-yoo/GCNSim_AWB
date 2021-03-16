@@ -50,6 +50,7 @@ VertexReader::VertexReader(int id,
 	pre_repeat = 0;
 	req_f_address = XW_START;
 	pop_count = 0;
+	v_cache.push_back(0);
 	v_cache_idx = 0;
 	pre_row_archive = 0;
 }

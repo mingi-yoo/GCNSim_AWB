@@ -60,7 +60,6 @@ EdgeReader::EdgeReader(int id,
 	pre_w_fold_start = 0;
 	write_count = ceil((double)a_h/CACHE_LINE_COUNT);
 	do_write = false;
-	t_cache.push_back(0);
 	e_cache_idx = 0;
 	pre_row_archive = 0;
 	last_v = 0;

@@ -20,8 +20,6 @@ extern uint64_t w_h, w_w, x_h, x_w, a_w, a_h;
 
 extern int DIVISION_TYPE;
 
-uint64_t tot_axw_count;
-
 uint64_t w_fold;
 
 
@@ -56,7 +54,7 @@ Distributer::Distributer(IniParser *ini, DataReader *data) {
 		a_row_offset[i] = 0x0010000000000000 * i;
 		axw_offset[i] = 0x0010000000000000 * i;
 	}
-	tot_axw_count = ceil((double)a_h  / CACHE_LINE_COUNT) * w_fold;
+	
 	Distribute();
 }
 

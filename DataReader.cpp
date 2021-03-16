@@ -20,6 +20,7 @@ extern uint64_t AXW_START;
 uint64_t w_h, w_w, x_h, x_w, a_w, a_h;
 
 extern uint64_t max_v;
+uint64_t tot_axw_count;
 queue<uint64_t> edge_req_count;
 queue<uint64_t> edge_req_count_cnt;
 queue<uint64_t> vertex_req_count;
@@ -68,6 +69,7 @@ queue<uint64_t> DataReader::GetUint64Val(string line, char delimiter) {
 			vertex_req_count.push(v_count);
 			start_v = stoull(temp);
 			v_count = 0;
+			//cout<<"Check V, E: "<<stoull(temp) - start_v<<" "<<v_count<<endl;
 		}
 		internal.push(stoull(temp));
 	}
@@ -108,6 +110,8 @@ bool DataReader::ReadData(string path1, string path2) {
 		is_vertex = false;
 		adjcolindex = GetUint64Val(line, ' ');
 		openFile2.close();
+
+		tot_axw_count = ceil((double)a_h / CACHE_LINE_COUNT) * w_fold * edge_req_count.size();
 	}
 	else {
 		throw invalid_argument("Cannot open datafile.");
