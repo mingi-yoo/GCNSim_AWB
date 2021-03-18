@@ -50,7 +50,6 @@ VertexReader::VertexReader(int id,
 	pre_repeat = 0;
 	req_f_address = XW_START;
 	pop_count = 0;
-	v_cache.push_back(0);
 	v_cache_idx = 0;
 	pre_row_archive = 0;
 }
@@ -59,8 +58,8 @@ VertexReader::~VertexReader() {}
 
 uint64_t VertexReader::TransferData() {
 	//cout<<"VR) COL "<<pre_row<<" is passed"<<endl;
-	uint64_t ret = -1;
-	if (!vq.empty()) {
+	uint64_t ret = 9876543210;
+	if (!vq.empty() && x_repeat == 0) {
 		pre_row++;
 
 		ret = vq.front();
@@ -76,8 +75,6 @@ uint64_t VertexReader::TransferData() {
 		if (pop_count == CACHE_LINE_COUNT || pre_row == a_h - 1)
 			pop_count = 0;
 
-		if (vq.empty())
-			flag.q_empty = true;
 		if ((req_stat.pre_read_cnt < req_stat.tot_read_cnt) 
 			&& (MAX_QUEUE_SIZE - q_space > CACHE_LINE_COUNT))
 			flag.req_need = true;
@@ -113,6 +110,7 @@ uint64_t VertexReader::TransferData() {
 				x_repeat = 0;
 				req_stat.tot_read_cnt = ceil((double)vertex_req_count.front()/CACHE_LINE_COUNT);
 				vertex_req_count.pop();
+				req_stat.pre_read_cnt = 0;
 				if (pre_row == a_h)
 					flag.req_need = false;
 				else

@@ -59,7 +59,7 @@ queue<uint64_t> DataController::AdjRowDataReturn() {
 	int count = CACHE_LINE_COUNT;
 	queue<uint64_t> ret;
 
-	if (v_limit + CACHE_LINE_COUNT > vertex_req_count_cnt.front()) {
+	if (v_limit + CACHE_LINE_COUNT >= vertex_req_count_cnt.front()) {
 		count = vertex_req_count_cnt.front() - v_limit;
 		v_limit = 0;
 		vertex_req_count_cnt.pop();
@@ -89,7 +89,7 @@ queue<uint64_t> DataController::AdjColDataReturn() {
 	int count = CACHE_LINE_COUNT;
 	queue<uint64_t> ret;
 
-	if (e_limit + CACHE_LINE_COUNT > edge_req_count_cnt.front()) {
+	if (e_limit + CACHE_LINE_COUNT >= edge_req_count_cnt.front()) {
 		count = edge_req_count_cnt.front() - e_limit;
 		e_limit = 0;
 		edge_req_count_cnt.pop();

@@ -111,7 +111,7 @@ bool DataReader::ReadData(string path1, string path2) {
 		adjcolindex = GetUint64Val(line, ' ');
 		openFile2.close();
 
-		tot_axw_count = ceil((double)a_h / CACHE_LINE_COUNT) * w_fold * edge_req_count.size();
+		tot_axw_count = ceil((double)a_h / CACHE_LINE_COUNT) * w_w * edge_req_count.size();
 	}
 	else {
 		throw invalid_argument("Cannot open datafile.");

@@ -133,7 +133,7 @@ ERData EdgeReader::TransferData() {
 }
 
 void EdgeReader::OuterProduct() {
-	if (!eq.empty() && remain_col_num != 0) {
+	if (!eq.empty() && remain_col_num != 0 && x_repeat == 0) {
 		uint64_t row = eq.front();
 		eq.pop();
 		e_cache.push_back(row);
@@ -173,6 +173,9 @@ void EdgeReader::OuterProduct() {
 			can_receive = true;
 			if (pre_row % max_v == 0 || pre_row == a_h) {
 				block_cnt++;
+				req_stat.tot_read_cnt = ceil((double)edge_req_count.front()/CACHE_LINE_COUNT);
+				edge_req_count.pop();
+				req_stat.pre_read_cnt = 0;
 				if (pre_row == a_h)
 					can_receive = false;
 				else
@@ -228,7 +231,7 @@ void EdgeReader::ReceiveData(queue<uint64_t> data) {
 
 void EdgeReader::ReceiveData(uint64_t vertex) {
 	//cout<<"ER) VERTEX RECEIVE"<<endl;
-	if (vertex != -1) {
+	if (vertex < 9876543210) {
 		if (cur_v > vertex)
 			prev_v = last_v;
 		else
