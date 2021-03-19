@@ -226,7 +226,7 @@ void Controller::ScheduleTransaction() {
     }
 }
 
-bool IsQueueFill() {
+bool Controller::IsQueueFill() {
     return write_buffer_.size() > 0;
 }
 

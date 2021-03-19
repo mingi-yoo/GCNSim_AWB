@@ -50,6 +50,8 @@ void MemorySystem::PrintStats() const { dram_system_->PrintStats(); }
 
 void MemorySystem::ResetStats() { dram_system_->ResetStats(); }
 
+void MemorySystem::IsQueueFill() { dram_system_-> IsQueueFill()}
+
 MemorySystem* GetMemorySystem(const std::string &config_file, const std::string &output_dir,
                  std::function<void(uint64_t)> read_callback,
                  std::function<void(uint64_t)> write_callback) {
@@ -63,3 +65,5 @@ MemorySystem* GetMemorySystem(const std::string &config_file, const std::string 
 extern "C" {
 void libdramsim3_is_present(void) { ; }
 }
+
+

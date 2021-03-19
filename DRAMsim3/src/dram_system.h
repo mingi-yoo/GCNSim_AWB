@@ -32,6 +32,8 @@ class BaseDRAMSystem {
                                        bool is_write) const = 0;
     virtual bool AddTransaction(uint64_t hex_addr, bool is_write) = 0;
     virtual void ClockTick() = 0;
+
+    virtual bool IsQueueFill() = 0;
     int GetChannel(uint64_t hex_addr) const;
 
     std::function<void(uint64_t req_id)> read_callback_, write_callback_;
@@ -67,7 +69,7 @@ class JedecDRAMSystem : public BaseDRAMSystem {
     bool WillAcceptTransaction(uint64_t hex_addr, bool is_write) const override;
     bool AddTransaction(uint64_t hex_addr, bool is_write) override;
     void ClockTick() override;
-    bool IsQueueFill();
+    bool IsQueueFill() override;
 };
 
 // Model a memorysystem with an infinite bandwidth and a fixed latency (possibly

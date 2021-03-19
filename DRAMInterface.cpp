@@ -172,5 +172,5 @@ void DRAMInterface::WriteCompleteCallback(uint64_t address) {
 }
 
 bool DRAMInterface::WriteExist() {
-	return dram->IsQueueFill();
+	return dram[0]->IsQueueFill();
 }
