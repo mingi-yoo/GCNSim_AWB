@@ -169,6 +169,14 @@ void JedecDRAMSystem::ClockTick() {
     return;
 }
 
+bool JedecDRAMSystem::IsQueueFill() {
+    for (size_t i = 0; i < ctrls_.size(); i++) {
+        if (ctrls_[i]->IsQueueFill())
+            return true;
+    }
+    return false;
+}
+
 IdealDRAMSystem::IdealDRAMSystem(Config &config, const std::string &output_dir,
                                  std::function<void(uint64_t)> read_callback,
                                  std::function<void(uint64_t)> write_callback)

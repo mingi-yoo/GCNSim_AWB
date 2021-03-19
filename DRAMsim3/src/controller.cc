@@ -226,6 +226,10 @@ void Controller::ScheduleTransaction() {
     }
 }
 
+bool IsQueueFill() {
+    return write_buffer_.size() > 0;
+}
+
 void Controller::IssueCommand(const Command &cmd) {
 #ifdef CMD_TRACE
     cmd_trace_ << std::left << std::setw(18) << clk_ << " " << cmd << std::endl;

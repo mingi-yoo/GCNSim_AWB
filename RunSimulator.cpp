@@ -390,7 +390,7 @@ int main(int argc, char** argv) {
 			progress_idx++;
 		}
 
-		if (tot_axw_count == 0) {
+		if (tot_axw_count == 0 && !dram->WriteExist()) {
 			cout<<"AXW OPERATION OVER"<<endl;
 			break;
 		}

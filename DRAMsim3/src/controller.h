@@ -35,6 +35,7 @@ class Controller {
     void PrintEpochStats();
     void PrintFinalStats();
     void ResetStats() { simple_stats_.Reset(); }
+    bool IsQueueFill();
     std::pair<uint64_t, int> ReturnDoneTrans(uint64_t clock);
 
     int channel_id_;

@@ -170,3 +170,7 @@ void DRAMInterface::WriteCompleteCallback(uint64_t address) {
 	//cout<<"Write Complete. Address: "<<hex<<address;
 	//cout<<", Cycle: "<<dec<<cycle<<endl;
 }
+
+bool DRAMInterface::WriteExist() {
+	return dram->IsQueueFill();
+}
