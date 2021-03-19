@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include <queue>
+#include <cmath>
 #include <stdexcept>
 #include "Common.h"
 
